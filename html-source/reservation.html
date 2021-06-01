@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.4/dist/css/datepicker-bs4.min.css">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css">
+
     <title>Document</title>
     <style>
         .my-footer {
@@ -15,8 +20,13 @@
             padding: 1em;
             font-size: 80%;
         }
+
         .room-image {
             max-width: 50%;
+        }
+
+        .redText {
+            color: red;
         }
     </style>
 </head>
@@ -24,7 +34,8 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -36,7 +47,8 @@
                     <a class="nav-link" href="about.html">About</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
                         Rooms
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -61,24 +73,35 @@
         <div class="col-md-6">
             <h1 class="mt 5">Search for Availability</h1>
 
-            <form class="row g-3">
-                <div class="col-md-6">
-                    <label for="start_date" class="form-label">Starting date</label>
-                    <input required type="date" class="form-control" id="start_date" name="start_date" aria-describedby="startDateHelp">
-                    <div id="startDateHelp" class="form-text">Enter your starting date in the form of YYYY-MM-DD.</div>
+            <form class="row g-3 needs-validation" action="" method="post" novalidate>
+
+                <div class="col">
+                    <div class="row g-3" id="reservation-dates">
+                        <div class="col">
+                            <input required class="form-control" type="text" name="start" autocomplete="off" placeholder="Arrival Date">
+                        </div>
+                        <div class="col">
+                            <input required class="form-control" type="text" name="end" autocomplete="off" placeholder="Departure Date">
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <label for="ending_date" class="form-label">Ending date</label>
-                    <input required type="date" class="form-control" id="ending_date" name="ending_date" aria-describedby="endingDateHelp">
-                    <div id="endingDateHelp" class="form-text">Enter your ending date in the form of YYYY-MM-DD.</div>
-                </div>
+
+                <div class="col-12 "></div>
+
                 <div class="col-12 ">
                     <button type="submit" class="btn btn-primary">Check for Availability</button>
                 </div>
             </form>
         </div>
     </div>
-
+    <div class="row">
+        <div class="col">
+            <p id="myParagraph">this is some text</p>
+            <p>
+                <button class="btn btn-outline-secondary" id="colorButton">Click me</button>
+            </p>
+        </div>
+    </div>
 </div>
 
 <div class="row my-footer">
@@ -94,6 +117,69 @@
 </div>
 
 <!-- Option 1: Bootstrap Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.4/dist/js/datepicker-full.min.js"></script>
+<script src="https://unpkg.com/notie"></script>
+
+<script>
+    document.getElementById("colorButton").addEventListener("click", function () {
+        console.log("I am printing from JS");
+        let myEL = document.getElementById("myParagraph");
+        if (myEL.classList.contains("redText")) {
+            myEL.classList.remove("redText")
+            notify("Removed red", "warning")
+        } else {
+            myEL.classList.add("redText")
+            notify("Added red", "success")
+        }
+    })
+</script>
+
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        let forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
+
+<script>
+    const elem = document.getElementById('reservation-dates');
+    const rangepicker = new DateRangePicker(elem, {
+        format: "yyyy-mm-dd"
+    });
+
+    function notify(msg, msgType) {
+        notie.alert({
+            type: msgType,
+            text: msg,
+            stay: false, // optional, default = false
+            time: 3, // optional, default = 3, minimum = 1,
+            position: "top" // optional, default = 'top', enum: ['top', 'bottom']
+        })
+    }
+
+
+
+</script>
+
 </body>
 </html>
