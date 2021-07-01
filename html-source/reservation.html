@@ -9,26 +9,15 @@
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.4/dist/css/datepicker-bs4.min.css">
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css">
+    <link rel="stylesheet" type="text/css" href="static/css/styles.css">
 
-    <title>Document</title>
     <style>
-        .my-footer {
-            height: 5em;
-            background-color: #3d3d3d;
-            margin-top: 1.5em;
-            color: white;
-            padding: 1em;
-            font-size: 80%;
-        }
-
-        .room-image {
-            max-width: 50%;
-        }
-
-        .redText {
-            color: red;
+        p {
+            color:green;
         }
     </style>
+    <title>Document</title>
+
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -78,10 +67,12 @@
                 <div class="col">
                     <div class="row g-3" id="reservation-dates">
                         <div class="col">
-                            <input required class="form-control" type="text" name="start" autocomplete="off" placeholder="Arrival Date">
+                            <input required class="form-control" type="text" name="start" autocomplete="off"
+                                   placeholder="Arrival Date">
                         </div>
                         <div class="col">
-                            <input required class="form-control" type="text" name="end" autocomplete="off" placeholder="Departure Date">
+                            <input required class="form-control" type="text" name="end" autocomplete="off"
+                                   placeholder="Departure Date">
                         </div>
                     </div>
                 </div>
@@ -123,19 +114,129 @@
 
 <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.4/dist/js/datepicker-full.min.js"></script>
 <script src="https://unpkg.com/notie"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+
+    let attention = Prompt();
+
     document.getElementById("colorButton").addEventListener("click", function () {
-        console.log("I am printing from JS");
-        let myEL = document.getElementById("myParagraph");
-        if (myEL.classList.contains("redText")) {
-            myEL.classList.remove("redText")
-            notify("Removed red", "warning")
-        } else {
-            myEL.classList.add("redText")
-            notify("Added red", "success")
-        }
+        let html = `
+        <form id="check-availability-form" action="" method="post" novalidate class="needs-validation">
+            <div class="form-row">
+            <div class="col">
+            <div class="form-row" id="reservation-dates-modal">
+            <div class="col">
+            <input disabled required class="form-control" type="text" name="start" id="start" placeholder="Arrival">
+</div>
+<div class="col">
+            <input disabled required class="form-control" type="text" name="end" id="end" placeholder="Departure">
+</div>
+</div>
+</div>
+</div>
+        </form>
+        `
+        attention.custom({msg: html, title: "Choose your dates"});
     })
+
+
+    function Prompt() {
+        let toast = function (c) {
+            const {
+                msg = "",
+                icon = "success",
+                position = "top-end",
+            } = c;
+
+            const Toast = Swal.mixin({
+                toast: true,
+                title: msg,
+                position: position,
+                icon: icon,
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({})
+
+        }
+        let success = function (c) {
+            const {
+                msg = "",
+                title = "",
+                footer = "",
+            } = c;
+            Swal.fire({
+                icon: "success",
+                title: title,
+                text: msg,
+                footer: footer
+            })
+        }
+
+        let error = function (c) {
+            const {
+                msg = "",
+                title = "",
+                footer = "",
+            } = c;
+            Swal.fire({
+                icon: "error",
+                title: title,
+                text: msg,
+                footer: footer
+            })
+        }
+
+        async function custom(c) {
+            const {
+                msg = "",
+                title = "",
+            } = c;
+
+            const {value: formValues} = await Swal.fire({
+                title: title,
+                html: msg,
+                backdrop: false,
+                focusConfirm: false,
+                showCancelButton: true,
+                willOpen: () => {
+                    const elem = document.getElementById("reservation-dates-modal");
+                    const rp = new DateRangePicker(elem, {
+                        format: "yyyy-mm-dd",
+                        showOnFocus: true,
+                    })},
+                preConfirm: () => {
+                    return [
+                        document.getElementById('start').value,
+                        document.getElementById('end').value
+                    ]
+                },
+                didOpen: () => {
+                    document.getElementById('start').removeAttribute('disabled')
+                    document.getElementById('end').removeAttribute('disabled')
+                }
+            })
+
+            if (formValues) {
+                Swal.fire(JSON.stringify(formValues))
+            }
+        }
+
+        return {
+            toast: toast,
+            success: success,
+            error: error,
+            custom: custom,
+        }
+
+    }
 </script>
 
 <script>
@@ -177,7 +278,14 @@
         })
     }
 
-
+    function notifyModal(title, text, icon, confirmationButton) {
+        Swal.fire({
+            title: title,
+            text: text,
+            icon: icon,
+            confirmButtonText: confirmationButton
+        })
+    }
 
 </script>
 
