@@ -1,9 +1,12 @@
 package handlers
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/GitCMDR/go-bookings/pkg/config"
 	"github.com/GitCMDR/go-bookings/pkg/models"
 	"github.com/GitCMDR/go-bookings/pkg/render"
+	"log"
 	"net/http"
 )
 
@@ -66,9 +69,34 @@ func (m *Repository) Availability(w http.ResponseWriter, r *http.Request) { // d
 }
 
 func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) { // declare handler
-	w.Write([]byte("Posted to search availability"))
+	start := r.Form.Get("start")
+	end := r.Form.Get("end") // everything you get from a form is a string
+
+	w.Write([]byte(fmt.Sprintf("Start date is %s and end date is %s", start, end)))
 }
 
 func (m *Repository) Contact(w http.ResponseWriter, r *http.Request) { // declare handler
 	render.RenderTemplate(w, r, "contact.page.gohtml", &models.TemplateData{})
+}
+
+
+type jsonResponse struct {
+	OK bool `json:"ok"`
+	Message string `json:"message"`
+}
+
+// AvailabilityJSON handles request for availability and sends JSON response
+func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
+	resp := jsonResponse{
+		OK: false,
+		Message: "Available!",
+	}
+
+	out, err := json.MarshalIndent(resp, "", "    ")
+	if err != nil {
+		log.Print(err)
+	}
+	log.Println(string(out))
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(out)
 }
