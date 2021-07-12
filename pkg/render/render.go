@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"github.com/GitCMDR/go-bookings/pkg/config"
 	"github.com/GitCMDR/go-bookings/pkg/models"
+	"github.com/justinas/nosurf"
 	"html/template"
 	"log"
 	"net/http"
@@ -19,12 +20,13 @@ func NewTemplates(a *config.AppConfig) {
 	app = a
 }
 
-func AddDefaultData(td *models.TemplateData) *models.TemplateData {
+func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateData {
+	td.CSRFToken = nosurf.Token(r)
 	return td
 }
 
 // RenderTemplate renders templates using html/template
-func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData) { // define a function to render // templates, this will be used by all page handlers
+func RenderTemplate(w http.ResponseWriter, r *http.Request, tmpl string, td *models.TemplateData) { // define a function to render // templates, this will be used by all page handlers
 
 	var tc map[string]*template.Template
 
@@ -42,7 +44,7 @@ func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData)
 
 	buf := new(bytes.Buffer) // create a buffer
 
-	td = AddDefaultData(td) // add default data to template data map
+	td = AddDefaultData(td, r) // add default data to template data map
 
 	_ = t.Execute(buf, td)   // execute template to check for errors and write to buffer
 	_, err := buf.WriteTo(w) // write the template to writer
