@@ -1,9 +1,11 @@
 package main
 
 import (
-	"github.com/GitCMDR/go-bookings/pkg/config"
-	"github.com/GitCMDR/go-bookings/pkg/handlers"
-	"github.com/GitCMDR/go-bookings/pkg/render"
+	"encoding/gob"
+	"github.com/GitCMDR/go-bookings/internal/config"
+	"github.com/GitCMDR/go-bookings/internal/handlers"
+	"github.com/GitCMDR/go-bookings/internal/models"
+	"github.com/GitCMDR/go-bookings/internal/render"
 	"github.com/alexedwards/scs/v2"
 	"log"
 	"net/http"
@@ -17,6 +19,8 @@ var session *scs.SessionManager // create a variable of type pointer to scs.Sess
 
 // main is the main application function
 func main() {
+	// what am i going to put in the session
+	gob.Register(models.Reservation{})
 
 	// change this to true when in production
 	app.InProduction = false

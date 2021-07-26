@@ -153,6 +153,18 @@
             })
         }
 
+        {{ with .Error}}
+            notify("{{.}}", "error")
+        {{ end }}
+
+        {{ with .Flash}}
+        notify("{{.}}", "success")
+        {{ end }}
+
+        {{ with .Warning}}
+        notify("{{.}}", "warning")
+        {{ end }}
+
         function Prompt() {
             let toast = function (c) {
                 const{
@@ -224,15 +236,14 @@
                     focusConfirm: false,
                     showCancelButton: true,
                     willOpen: () => {
-                        const elem = document.getElementById("reservation-dates-modal");
-                        const rp = new DateRangePicker(elem, {
-                            format: 'yyyy-mm-dd',
-                            showOnFocus: true,
-                        })
+                        if (c.willOpen !== undefined) {
+                            c.willOpen();
+                        }
                     },
                     didOpen: () => {
-                        document.getElementById("start").removeAttribute("disabled");
-                        document.getElementById("end").removeAttribute("disabled");
+                        if (c.didOpen !== undefined) {
+                            c.didOpen();
+                        }
                     },
                     preConfirm: () => {
                         return [
