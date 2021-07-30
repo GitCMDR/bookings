@@ -19,6 +19,27 @@ var session *scs.SessionManager // create a variable of type pointer to scs.Sess
 
 // main is the main application function
 func main() {
+	err := run()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Printf("Starting application on port %v", portNumber)
+	//_ = http.ListenAndServe(portNumber, nil) // if error throw error away
+
+	srv := &http.Server{
+		Addr:    portNumber,
+		Handler: routes(&app),
+	}
+
+	err = srv.ListenAndServe()
+	log.Fatal(err)
+}
+
+// 🔥 in order to run the app as a whole do go run *.go instead of go run main.go
+
+func run() error {
 	// what am i going to put in the session
 	gob.Register(models.Reservation{})
 
@@ -34,9 +55,12 @@ func main() {
 	app.Session = session // share session to all packages in the app via config file
 
 	tc, err := render.CreateTemplateCache() // create template cache when app runs
+
 	if err != nil {
 		log.Fatal("cannot create template cache")
+		return err
 	}
+
 	app.TemplateCache = tc // store template cache in app config
 	app.UseCache = false
 
@@ -45,19 +69,5 @@ func main() {
 
 	render.NewTemplates(&app)
 
-	//http.HandleFunc("/", handlers.Repo.Home)
-	//http.HandleFunc("/about", handlers.Repo.About)
-
-	log.Printf("Starting application on port %v", portNumber)
-	//_ = http.ListenAndServe(portNumber, nil) // if error throw error away
-
-	srv := &http.Server{
-		Addr:    portNumber,
-		Handler: routes(&app),
-	}
-
-	err = srv.ListenAndServe()
-	log.Fatal(err)
+	return nil
 }
-
-// 🔥 in order to run the app as a whole do go run *.go instead of go run main.go

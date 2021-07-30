@@ -46,13 +46,21 @@ func TestRenderTemplate(t *testing.T) {
 
 	err = RenderTemplate(&ww, r, "home.page.gohtml", &models.TemplateData{})
 	if err != nil {
-		t.Error("Error writing template to browser")
+		t.Error("Error writing template to browser when cache is turned off")
 	}
 
 	err = RenderTemplate(&ww, r, "some-other-page-that-doesn't-exist.page.gohtml", &models.TemplateData{})
 	if err == nil {
 		t.Error("Rendered template that doesn't exist 👻")
 	}
+
+	app.UseCache = true
+
+	err = RenderTemplate(&ww, r, "home.page.gohtml", &models.TemplateData{})
+	if err != nil {
+		t.Error("Error writing template to browser when cache is turned on")
+	}
+
 }
 
 func getSession() (*http.Request, error) {
@@ -66,4 +74,15 @@ func getSession() (*http.Request, error) {
 
 	r = r.WithContext(ctx)
 	return r, nil
+}
+
+func TestCreateTemplateCache(t *testing.T) {
+	pathToTemplates = "./../../templates"
+
+	_, err := CreateTemplateCache()
+	if err != nil {
+		t.Error(err)
+	}
+
+
 }

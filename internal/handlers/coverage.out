@@ -1,0 +1,22 @@
+mode: set
+github.com/GitCMDR/go-bookings/internal/handlers/handlers.go:23.47,27.2 1 1
+github.com/GitCMDR/go-bookings/internal/handlers/handlers.go:30.33,32.2 1 1
+github.com/GitCMDR/go-bookings/internal/handlers/handlers.go:35.67,39.2 3 1
+github.com/GitCMDR/go-bookings/internal/handlers/handlers.go:42.68,54.2 5 1
+github.com/GitCMDR/go-bookings/internal/handlers/handlers.go:56.74,65.2 4 1
+github.com/GitCMDR/go-bookings/internal/handlers/handlers.go:68.78,70.16 2 1
+github.com/GitCMDR/go-bookings/internal/handlers/handlers.go:75.2,91.19 6 1
+github.com/GitCMDR/go-bookings/internal/handlers/handlers.go:102.2,104.66 2 1
+github.com/GitCMDR/go-bookings/internal/handlers/handlers.go:70.16,73.3 2 0
+github.com/GitCMDR/go-bookings/internal/handlers/handlers.go:91.19,100.3 4 0
+github.com/GitCMDR/go-bookings/internal/handlers/handlers.go:108.82,111.9 2 1
+github.com/GitCMDR/go-bookings/internal/handlers/handlers.go:118.2,127.51 5 0
+github.com/GitCMDR/go-bookings/internal/handlers/handlers.go:111.9,116.3 4 1
+github.com/GitCMDR/go-bookings/internal/handlers/handlers.go:130.71,132.2 1 1
+github.com/GitCMDR/go-bookings/internal/handlers/handlers.go:134.69,136.2 1 1
+github.com/GitCMDR/go-bookings/internal/handlers/handlers.go:138.75,140.2 1 1
+github.com/GitCMDR/go-bookings/internal/handlers/handlers.go:142.79,147.2 3 1
+github.com/GitCMDR/go-bookings/internal/handlers/handlers.go:150.70,152.2 1 1
+github.com/GitCMDR/go-bookings/internal/handlers/handlers.go:161.79,168.16 3 1
+github.com/GitCMDR/go-bookings/internal/handlers/handlers.go:171.2,173.14 3 1
+github.com/GitCMDR/go-bookings/internal/handlers/handlers.go:168.16,170.3 1 0
