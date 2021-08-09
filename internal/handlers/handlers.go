@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/GitCMDR/go-bookings/internal/config"
 	"github.com/GitCMDR/go-bookings/internal/forms"
+	"github.com/GitCMDR/go-bookings/internal/helpers"
 	"github.com/GitCMDR/go-bookings/internal/models"
 	"github.com/GitCMDR/go-bookings/internal/render"
 	"log"
@@ -33,24 +34,14 @@ func NewHandlers(r *Repository) {
 
 // Home is the home page handler
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) { // declare handler
-	remoteIP := r.RemoteAddr
-	m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
 	render.RenderTemplate(w, r, "home.page.gohtml", &models.TemplateData{}) // each handler will be mapped to a single gohtml template
 }
 
 // About is the about page handler
 func (m *Repository) About(w http.ResponseWriter, r *http.Request) { // declare handler
-	// perform some logic
-	stringMap := make(map[string]string)
-	stringMap["Test"] = "Hello, I'm context data"
-
-	remoteIP := m.App.Session.GetString(r.Context(), "remote_ip")
-	stringMap["remote_ip"] = remoteIP
 
 	// send the data to the template
-	render.RenderTemplate(w, r, "about.page.gohtml", &models.TemplateData{
-		StringMap: stringMap,
-	})
+	render.RenderTemplate(w, r, "about.page.gohtml", &models.TemplateData{})
 }
 
 func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) { // declare handler
@@ -68,7 +59,7 @@ func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) { // de
 func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) { // declare handler
 	err := r.ParseForm()
 	if err != nil {
-		log.Println(err)
+		helpers.ServerError(w, err)
 		return
 	}
 
