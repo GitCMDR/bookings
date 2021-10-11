@@ -39,7 +39,6 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) { // declare h
 
 // About is the about page handler
 func (m *Repository) About(w http.ResponseWriter, r *http.Request) { // declare handler
-
 	// send the data to the template
 	render.RenderTemplate(w, r, "about.page.gohtml", &models.TemplateData{})
 }
@@ -58,6 +57,7 @@ func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) { // de
 // PostReservation handles the posting of a reservation form
 func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) { // declare handler
 	err := r.ParseForm()
+
 	if err != nil {
 		helpers.ServerError(w, err)
 		return
@@ -157,7 +157,7 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 
 	out, err := json.MarshalIndent(resp, "", "    ")
 	if err != nil {
-		log.Print(err)
+		helpers.ServerError(w, err)
 	}
 	log.Println(string(out))
 	w.Header().Set("Content-Type", "application/json")
